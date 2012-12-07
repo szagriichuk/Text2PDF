@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 /**
- * Hello world!
+ * @author sergiizagriichuk
  */
 public class TextToPdfEngine {
 

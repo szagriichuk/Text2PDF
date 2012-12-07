@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.*;
 
 /**
- * Unit test for simple TextToPdfEngine.
+ * @author sergiizagriichuk
  */
 public class TextToPdfEngineTest {
     private TextToPdfEngine textToPdfEngine = new TextToPdfEngine();
@@ -63,7 +63,27 @@ public class TextToPdfEngineTest {
 
         textToPdfEngine.convertTextToPdf(data, pdfFileName);
 
-        Assert.assertEquals(data, readDataFromPdf(pdfFileName));
+        // equals all valuable chars, skips gaps
+        Assert.assertEquals(calculateSumOfValuableCharacters(data), calculateSumOfValuableCharacters(readDataFromPdf(pdfFileName)));
+    }
+
+    private long calculateSumOfValuableCharacters(String data) {
+
+        char[] chars = data.toCharArray();
+        long result = 0;
+
+        for (char c : chars) {
+            if (!isCharAcceptable(c)) {
+                result += c;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean isCharAcceptable(char c) {
+        // for binary and text verification
+        return c == 0x0a || c == ' ';
     }
 
     private String readDataFromTextFile(String pathToFile) throws IOException {
