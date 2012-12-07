@@ -37,15 +37,17 @@ public class TextToPdfEngine {
         }
     }
 
-    private void createPdfWriterForDocument(String pathToPdfFile, Document document) throws FileNotFoundException {
+    private PdfWriter createPdfWriterForDocument(String pathToPdfFile, Document document) throws FileNotFoundException {
 
         if (pathToPdfFile == null)
             throw new FileNotFoundException("Path to document cannot be null");
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(pathToPdfFile));
+            return PdfWriter.getInstance(document, new FileOutputStream(pathToPdfFile));
         } catch (DocumentException e) {
             LOGGER.error(e.getMessage());
         }
+
+        return null;
     }
 }
