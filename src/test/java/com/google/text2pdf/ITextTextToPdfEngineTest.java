@@ -1,5 +1,6 @@
 package com.google.text2pdf;
 
+import com.google.text2pdf.impl.ITextText2PdfEngine;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
@@ -12,17 +13,17 @@ import java.io.*;
 /**
  * @author sergiizagriichuk
  */
-public class TextToPdfEngineTest {
-    private TextToPdfEngine textToPdfEngine = new TextToPdfEngine();
+public class ITextTextToPdfEngineTest {
+    private Text2PdfEngine text2PdfEngine = new ITextText2PdfEngine();
 
     @Test(expected = com.itextpdf.text.ExceptionConverter.class)
     public void testNullTextToPdf() throws Exception {
-        textToPdfEngine.convertTextToPdf(null, "test1.pdf");
+        text2PdfEngine.convertTextToPdf(null, "test1.pdf");
     }
 
     @Test(expected = FileNotFoundException.class)
     public void testNullPathToPdf() throws Exception {
-        textToPdfEngine.convertTextToPdf("test content", null);
+        text2PdfEngine.convertTextToPdf("test content", null);
     }
 
     @Test(expected = com.itextpdf.text.ExceptionConverter.class)
@@ -30,14 +31,19 @@ public class TextToPdfEngineTest {
 
         String fileName = "test1.pdf";
 
-        textToPdfEngine.convertTextToPdf("", fileName);
+        text2PdfEngine.convertTextToPdf("", fileName);
 
         Assert.assertEquals("", readDataFromPdf(fileName));
     }
 
     @Test(expected = FileNotFoundException.class)
     public void testEmptyPathToPdf() throws Exception {
-        textToPdfEngine.convertTextToPdf("test content", "");
+        text2PdfEngine.convertTextToPdf("test content", "");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testChangeReportTemplate() throws Exception {
+        text2PdfEngine.changeReportTemplate("testPath");
     }
 
     @Test
@@ -61,7 +67,7 @@ public class TextToPdfEngineTest {
 
         String data = readDataFromTextFile(textContentFileName);
 
-        textToPdfEngine.convertTextToPdf(data, pdfFileName);
+        text2PdfEngine.convertTextToPdf(data, pdfFileName);
 
         // equals all valuable chars, skips gaps
         Assert.assertEquals(calculateSumOfValuableCharacters(data), calculateSumOfValuableCharacters(readDataFromPdf(pdfFileName)));
@@ -73,7 +79,7 @@ public class TextToPdfEngineTest {
         long result = 0;
 
         for (char c : chars) {
-            if (!isCharAcceptable(c)) {
+            if (isCharAcceptable(c)) {
                 result += c;
             }
         }
@@ -83,7 +89,7 @@ public class TextToPdfEngineTest {
 
     private boolean isCharAcceptable(char c) {
         // for binary and text verification
-        return c == 0x0a || c == ' ';
+        return c != 0x0a && c != ' ';
     }
 
     private String readDataFromTextFile(String pathToFile) throws IOException {

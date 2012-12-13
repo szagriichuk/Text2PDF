@@ -1,4 +1,4 @@
-package com.google.text2pdf;
+package com.google.text2pdf.impl;
 
 import com.google.text2pdf.logger.LoggerFacade;
 import com.itextpdf.text.Document;
@@ -13,10 +13,11 @@ import java.io.FileOutputStream;
 /**
  * @author sergiizagriichuk
  */
-public class TextToPdfEngine {
+public class ITextText2PdfEngine extends AbstractText2PdfEngine {
 
-    private static final Logger LOGGER = LoggerFacade.getLogger(TextToPdfEngine.class);
+    private static final Logger LOGGER = LoggerFacade.getLogger(ITextText2PdfEngine.class);
 
+    @Override
     public void convertTextToPdf(String text, String pathToPdfFile) throws FileNotFoundException {
         Document document = new Document();
 
@@ -50,4 +51,10 @@ public class TextToPdfEngine {
 
         return null;
     }
+
+    @Override
+    public void changeReportTemplate(String pathToReportTemplate) throws FileNotFoundException {
+        throw new UnsupportedOperationException("This operation unsupported by current implementation");
+    }
+
 }
